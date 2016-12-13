@@ -83,6 +83,35 @@ public class TextBookMysqlDao implements TextBookDao {
     return list;
   }
   
+  public TextBook getDetail(String title) throws Exception {
+    Connection con = ds.getConnection();
+    TextBook textbook = null;
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select title, author, press, releaseDate, language, description, page, price from ex_textbooks where title=?"); ){
+      
+      stmt.setString(1, title);
+      ResultSet rs = stmt.executeQuery();
+      
+      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
+        textbook = new TextBook(); 
+        textbook.setTitle(rs.getString("title"));
+        textbook.setAuthor(rs.getString("author"));
+        textbook.setPress(rs.getString("press"));
+        textbook.setReleaseDate(rs.getInt("releaseDate"));
+        textbook.setLanguage(rs.getString("language"));
+        textbook.setDescription(rs.getString("description"));
+        textbook.setPage(rs.getInt("page"));
+        textbook.setPrice(rs.getInt("price"));
+      }
+      rs.close();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+    return textbook;
+  }
+  
   public void insert(TextBook textbook) throws Exception {
     Connection con = ds.getConnection();
     try (

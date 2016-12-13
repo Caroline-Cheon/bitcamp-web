@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>교재-입력폼</title>
+</head>
+<body>
+<h1>교재 등록폼</h1>
+<form action='add' method='POST'>
+<table border='1'>
+<tr><th>책이름</th><td><input name="title" type='text' placeholder='예)WebApp'></td></tr>
+<tr><th>저자</th><td><input name='author' type='text' placeholder='예)천재'></td></tr>
+<tr><th>출판사</th><td><input name='press' type='text' placeholder='예)비트교육센터'></td></tr>
+<tr><th>출판년도</th><td><input name='releaseDate' type='text' placeholder='예)2016'></td></tr>
+<tr><th>언어</th><td><input name="language" type='text' placeholder='예)한국어'></td></tr>
+<tr><th>설명</th><td><input name='description' type='text' placeholder='예)좋은책임당'></td></tr>
+<tr><th>쪽수</th><td><input name='page' type='text' placeholder='예)300'></td></tr>
+<tr><th>가격</th><td><input name='price' type='text' placeholder='예)50000'></td></tr>
+</table>
+<button type='submit'>등록</button>
+ <a href='list'>목록</a>
+</form>
+</body>
+</html>

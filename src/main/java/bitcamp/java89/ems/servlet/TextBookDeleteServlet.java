@@ -16,10 +16,24 @@ public class TextBookDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
+    String title = request.getParameter("title");
+    
+    response.setHeader("Refresh", "1;url=list");  
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset='UTF-8'>");
+    out.println("<title>교재관리-삭제</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h1>삭제 결과</h1>");
+    
     try {
       TextBookMysqlDao textbookDao = TextBookMysqlDao.getinstance();
-      response.setContentType("text/plain;charset=UTF-8");
-      PrintWriter out = response.getWriter();
       
       if (!textbookDao.existTitle(request.getParameter("title"))) {
         out.println("책이름을 찾지 못했습니다.");
@@ -27,10 +41,13 @@ public class TextBookDeleteServlet extends HttpServlet {
       }
       
       textbookDao.delete(request.getParameter("title"));
-      out.println("해당 데이터 삭제 완료하였습니다.");
+      out.println("<p>삭제 완료하였습니다.</p>");
          
     } catch (Exception e) {
-      throw new ServletException(e);
+      out.printf("<p>%s</p>\n", e.getMessage());  // 위에 익셉션내용이 여기서 에러메세지
     }
+    
+    out.println("</body>");
+    out.println("</html>");
   }
 }

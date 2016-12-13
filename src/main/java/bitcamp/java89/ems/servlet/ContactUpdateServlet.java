@@ -15,28 +15,43 @@ import bitcamp.java89.ems.vo.Contact;
 public class ContactUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    try {
-      ContactMysqlDao contactDao = ContactMysqlDao.getinstance();
-      response.setContentType("text/plain;charset=UTF-8");
-      PrintWriter out = response.getWriter();
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       
-      if (!contactDao.existEmail(request.getParameter("email"))) {
-        out.println("이메일을 찾지 못했습니다.");
-        return;
-      }
-      
+      request.setCharacterEncoding("UTF-8");
+    
       Contact contact = new Contact();
       contact.setName(request.getParameter("name"));
       contact.setPosition(request.getParameter("position"));
       contact.setTel(request.getParameter("tel"));
       contact.setEmail(request.getParameter("email"));
       
+      response.setHeader("Refresh", "1;url=list");
+      response.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      
+      out.println("<!DOCTYPE html>");
+      out.println("<html>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>연락처관리-변경</title>");
+      out.println("</head>");
+      out.println("<body>");
+      out.println("<h1>변경 결과</h1>");
+      
+      try {
+        ContactMysqlDao contactDao = ContactMysqlDao.getinstance();
+      
+      if (!contactDao.existEmail(request.getParameter("email"))) {
+        throw new Exception("이메일을 찾지 못했습니다.");
+      }
+      
       contactDao.update(contact);
-      out.println("등록하였습니다.");
+      out.println("<p>변경하였습니다.</p>");
       
     } catch (Exception e) {
-      throw new ServletException(e);
+      out.printf("<p>%s</p>\n", e.getMessage());  // 위에 익셉션내용이 여기서 에러메세지
     }
+      out.println("</body>");
+      out.println("</html>");
   }
 }

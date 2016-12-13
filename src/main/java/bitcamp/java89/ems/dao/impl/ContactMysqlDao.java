@@ -75,6 +75,31 @@ public class ContactMysqlDao implements ContactDao {
     return list;
   }
   
+  public Contact getDetail(String email) throws Exception {
+    Connection con = ds.getConnection();
+    Contact contact = null;
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select position, name, tel, email from ex_contacts where email=?"); ) {
+      
+      stmt.setString(1, email);
+      ResultSet rs = stmt.executeQuery();
+      
+      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
+        contact = new Contact(); 
+        contact.setName(rs.getString("name"));
+        contact.setPosition(rs.getString("position"));
+        contact.setTel(rs.getString("tel"));
+        contact.setEmail(rs.getString("email"));
+      }
+      rs.close();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+    return contact;
+  }
+  
   public void insert(Contact contact) throws Exception {
     Connection con = ds.getConnection(); 
     try (

@@ -7,6 +7,7 @@ import bitcamp.java89.ems.vo.TextBook;
 public interface TextBookDao {
   ArrayList<TextBook> getList() throws Exception;
   ArrayList<TextBook> getListByTitle(String title) throws Exception;
+  TextBook getDetail(String title) throws Exception;   // 추가
   void insert(TextBook textbook) throws Exception;
   void update(TextBook textbook) throws Exception;
   void delete(String title) throws Exception;
